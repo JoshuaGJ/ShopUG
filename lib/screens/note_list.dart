@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/note_detail.dart';
+import 'note_detail.dart';
 
 void main() {
   runApp(NoteList());
@@ -22,7 +22,7 @@ class NoteListState extends State<NoteList> {
       body: getListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          NavDetailScrn();
+          navDetailScrn("Add Note");
         },
         tooltip: "add note",
         backgroundColor: Colors.deepPurple,
@@ -47,6 +47,7 @@ class NoteListState extends State<NoteList> {
             subtitle: Text(""),
             trailing: Icon(Icons.delete),
             onTap: () {
+              navDetailScrn("Edit Note");
               debugPrint("list tile Tapped");
             },
           ),
@@ -55,10 +56,10 @@ class NoteListState extends State<NoteList> {
     );
   }
 
-  void NavDetailScrn() {
+  void navDetailScrn(String title) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NoteDetail()),
+      MaterialPageRoute(builder: (context) => NoteDetail(title)),
     );
   }
 }
