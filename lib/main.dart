@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/note_list.dart';
-import 'screens/note_detail.dart';
+//import 'screens/note_detail.dart';
 
 void main() {
   runApp(MyApp());
