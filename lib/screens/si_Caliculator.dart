@@ -24,12 +24,14 @@ void main() => runApp(
 );
 
 class SIapp extends StatefulWidget {
+  const SIapp({super.key});
+
   @override
   State<SIapp> createState() => _SIappState();
 }
 
 class _SIappState extends State<SIapp> {
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   final _currency = ["USD", "pound", "sterling"];
   String currentSelected = "USD";
@@ -62,6 +64,7 @@ class _SIappState extends State<SIapp> {
                     if (value == null || value.isEmpty) {
                       return "Please enter a valid number";
                     }
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: "Principal Amount",
@@ -84,6 +87,7 @@ class _SIappState extends State<SIapp> {
                     if (value == null || value.isEmpty) {
                       return "Please enter the interest rate";
                     }
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: "Rate of Interest",
@@ -111,6 +115,7 @@ class _SIappState extends State<SIapp> {
                           if (value == null || value.isEmpty) {
                             return "Please enter the term (inYears)";
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           labelText: "Term",

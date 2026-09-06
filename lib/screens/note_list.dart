@@ -6,6 +6,8 @@ void main() {
 }
 
 class NoteList extends StatefulWidget {
+  const NoteList({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return NoteListState();

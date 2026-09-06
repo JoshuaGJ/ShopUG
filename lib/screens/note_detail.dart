@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class NoteDetail extends StatefulWidget {
   final String addAppBartitle;
 
-  NoteDetail(this.addAppBartitle);
+  const NoteDetail(this.addAppBartitle, {super.key});
 
   @override
   State<StatefulWidget> createState() {
