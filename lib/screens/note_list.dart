@@ -97,18 +97,37 @@ class NoteListState extends State<NoteList> {
   }
 
   void _delete(Note note) async {
+    final noteToDelete = note;
     int result = await databaseHelper.deleteNote(note.id!);
     if (!context.mounted) return;
     if (result != 0) {
-      _showSnackBar(context, 'Note deleted successfully');
+      _showSnackBar(
+        context,
+        'Note deleted successfully',
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () async {
+            await databaseHelper.insertNote(noteToDelete);
+          },
+        ),
+      );
+
       updateListView();
     }
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+  void _showSnackBar(
+    BuildContext context,
+    String message, {
+    SnackBarAction? action,
+  }) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 5),
+      action: action,
+    );
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void navDetailScrn(Note note, String title) async {

@@ -180,9 +180,9 @@ class NoteDetailState extends State<NoteDetail> {
     }
 
     if (result != 0) {
-      _showAlertDialog('Status', 'Note saved successfully');
+      _showSnackBar(context, 'Note saved successfully');
     } else {
-      _showAlertDialog('Status', 'Failed to save note');
+      _showSnackBar(context, 'Failed to save note');
     }
 
     moveToLastScreen();
@@ -192,14 +192,32 @@ class NoteDetailState extends State<NoteDetail> {
     // Case 1: If user is trying to delete the NEW NOTE i.e. he has come to
     // the detail page by pressing the FAB of NoteList page.
     if (widget.note.id == null) {
-      _showAlertDialog('Status', 'No Note was deleted');
+      moveToLastScreen();
+      _showSnackBar(context, 'Note deleted successfully');
       return;
     }
 
+    final noteToDelete = widget.note;
+
     // Case 2: User is trying to delete the old note that already has a valid ID.
     int result = await Helper.deleteNote(widget.note.id!);
+
+    // Context check across async boundary
+    if (!mounted) return;
+
     if (result != 0) {
-      _showAlertDialog('Status', 'Note Deleted Successfully');
+      moveToLastScreen();
+
+      _showSnackBar(
+        context,
+        'Note deleted successfully',
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () async {
+            await Helper.insertNote(noteToDelete);
+          },
+        ),
+      );
     } else {
       _showAlertDialog('Status', 'Error Occured while Deleting Note');
     }
@@ -213,5 +231,20 @@ class NoteDetailState extends State<NoteDetail> {
       content: Text(message),
     );
     showDialog(context: context, builder: (_) => alertDialog);
+  }
+
+  void _showSnackBar(
+    BuildContext context,
+    String message, {
+    SnackBarAction? action,
+  }) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 5),
+      action: action,
+    );
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
